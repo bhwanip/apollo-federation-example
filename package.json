@@ -1,0 +1,29 @@
+{
+  "name": "federation-reviews",
+  "description": "",
+  "dependencies": {
+    "@apollo/federation": "latest",
+    "apollo-datasource-rest": "latest",
+    "apollo-server": "latest",
+    "colors": "^1.3.3",
+    "graphql": "latest",
+    "@apollo/gateway": "latest",
+    "apollo-server": "2.5.1-alpha.1",
+    "graphql": "latest"
+  },
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "start:1": "cd svc/reviews; nodemon -w ../../_shared -w . index.js",
+    "start:2": "cd svc/products; nodemon -w ../../_shared -w . index.js",
+    "start:3": "cd svc/accounts; nodemon -w ../../_shared -w . index.js",
+    "start:4": "cd svc/inventory; nodemon -w ../../_shared -w . index.js",
+    "start:5": "cd svc/categories; nodemon -w ../../_shared -w . index.js",
+    "start:gateway": "cd svc; nodemon -d 1 -w ../_shared -w . -w ../gateway ../gateway"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "@types/graphql": "14.0.1",
+    "nodemon": "1.18.4"
+  }
+}
