@@ -12,13 +12,8 @@ const typeDefs = gql`
         slug: String!
         parent: Category
         children: [ Category! ]!
-#        products: [ Product! ]
     }
 
-#    extend type Product @key(fields: "upc") {
-#        upc: String! @external
-#        #		products: [Product!]
-#    }
 `
 
 const resolvers = {
@@ -27,6 +22,7 @@ const resolvers = {
 			return categories.roots.map((id) => ({ id }))
 		}
 	},
+
 	Category: {
 		__resolveReference(object) {
 			return categories.byId[object.id]
@@ -45,10 +41,6 @@ const resolvers = {
 		children(object) {
 			let category = categories.byId[object.id]
 			return category.children.map(id => categories.byId[id])
-		}
-		,
-		products(object) {
-			return [{upc:"2"}]
 		}
 	}
 }

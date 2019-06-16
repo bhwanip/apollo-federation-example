@@ -22,34 +22,36 @@ const typeDefs = gql`
 `
 
 const resolvers = {
+	Query: {
+		topProducts(_, args) {
+			return products
+				.map(prod => {
+					let stars = getStarsForProduct(prod)
+					if (!stars) stars = 2 // no review is probably better than bad review
+					return {
+						...prod,
+						avg: stars
+					}
+				})
+				.sort((a, b) => b.avg - a.avg)
+				.slice(0, args.limit)
+		}
+	},
+
 	Product: {
-		__resolveReference(object) {
-			return products.find(product => product.upc === object.upc)
+		__resolveReference(product) {
+			return products.find(item => item.upc === product.upc)
 		},
 		async category(product) {
-			await pause("product.category " + product.upc ,2000)
+			await pause("product.category " + product.upc, 2000)
 			return { id: product.category }
 		}
 	},
+
 	Category: {
 		async products(category) {
-			await pause("category.products " +category.id ,1000)
-
+			await pause("category.products " + category.id, 1000)
 			return products.filter(prod => prod.category === category.id)
-		}
-	},
-	Query: {
-		topProducts(_, args) {
-			return products.map(prod => {
-				let stars = getStarsForProduct(prod)
-				if (!stars) stars = 2 // no review is probably better than bad review
-				return {
-					...prod,
-					avg: stars
-				}
-			})
-				.sort((a, b) => b.avg - a.avg)
-				.slice(0, args.limit)
 		}
 	}
 }

@@ -4,6 +4,7 @@ const { users } = require('../../_shared/data')
 const typeDefs = gql`
     extend type Query {
         me: User
+        users: [ User! ]!
     }
 
     type User @key(fields: "id") {
@@ -17,8 +18,12 @@ const resolvers = {
 	Query: {
 		me() {
 			return { id: users[0].id }
+		},
+		users() {
+			return users
 		}
 	},
+
 	User: {
 		__resolveReference(object) {
 			return users.find(user => user.id === object.id)

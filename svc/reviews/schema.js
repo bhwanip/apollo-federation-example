@@ -40,8 +40,6 @@ const resolvers = {
 			return reviews
 		},
 		topReviewers(_, args) {
-			console.log("order", args.order)
-
 			const users = Object.values(reviews.reduce((users, review) => {
 				let userID = review.authorID
 				if (!users[userID]) users[userID] = { id: userID, count: 0 }
@@ -57,11 +55,13 @@ const resolvers = {
 				return users.sort((a, b) => b.count - a.count).slice(0, args.limit)
 		}
 	},
+
 	Review: {
 		author(review) {
 			return { __typename: "User", id: review.authorID }
 		}
 	},
+
 	User: {
 		reviews(user) {
 			return reviews.filter(review => review.authorID === user.id)
@@ -74,6 +74,7 @@ const resolvers = {
 			return found ? found.username : null
 		}
 	},
+
 	Product: {
 		reviews(product) {
 			return reviews.filter(review => review.product.upc === product.upc)
